@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CS2_Echo.Infrastructure.Services;
+using CS2_Echo.Logic.Interfaces;
 using CS2_Echo.UI.Models;
 using CS2_Echo.UI.Services;
 using CS2_Echo.UI.Views;

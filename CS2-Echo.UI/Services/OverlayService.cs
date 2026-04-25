@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using CS2_Echo.Infrastructure.Services;
+using CS2_Echo.Logic.Interfaces;
 using CS2_Echo.UI.ViewModels;
 using CS2_Echo.UI.Views;
 using Microsoft.Extensions.DependencyInjection;

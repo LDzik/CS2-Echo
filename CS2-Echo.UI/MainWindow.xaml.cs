@@ -14,6 +14,7 @@ using System.Windows.Interop;
 using Wpf.Ui;
 using Wpf.Ui.Abstractions;
 using Wpf.Ui.Controls;
+using CS2_Echo.Logic.Interfaces;
 
 
 namespace CS2_Echo.UI;

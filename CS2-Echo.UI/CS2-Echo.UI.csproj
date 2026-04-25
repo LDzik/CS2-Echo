@@ -19,6 +19,7 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Velopack" />
     <PackageReference Include="WPF-UI" />
     <PackageReference Include="WPF-UI.DependencyInjection" />
     <PackageReference Include="WPF-UI.Tray" />

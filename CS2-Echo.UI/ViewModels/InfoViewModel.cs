@@ -1,16 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CS2_Echo.Logic.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
+using Wpf.Ui;
+using Wpf.Ui.Controls;
 
 namespace CS2_Echo.UI.ViewModels;
 
 public partial class InfoViewModel : ObservableObject
 {
+    
+
     private const string GitHubRepoUrl = "https://github.com/LDzik/CS2-Echo";
     private const string BugReportUrl = "https://github.com/LDzik/CS2-Echo/issues";
+
+    private readonly IUpdateService _updateService;
+    private readonly ISnackbarService _snackbarService;
+
+    [ObservableProperty] public partial bool IsUpdateAvailable { get; set; }
 
     [RelayCommand]
     private void OpenGitHub()
@@ -38,6 +48,46 @@ public partial class InfoViewModel : ObservableObject
         {
             // blocked
         }
+    }
+
+    public InfoViewModel(IUpdateService updateService, ISnackbarService snackbarService)
+    {
+        _updateService = updateService;
+        _snackbarService = snackbarService;
+    }
+
+    [RelayCommand]
+    private async Task CheckForUpdatesAsync()
+    {
+        IsUpdateAvailable = await _updateService.CheckForUpdatesAsync();
+
+        if (IsUpdateAvailable)
+        {
+            _snackbarService.Show("Update Found",
+                "A new version of CS2 Echo is available!",
+                ControlAppearance.Success,
+                new SymbolIcon(SymbolRegular.ArrowDownload24),
+                new System.TimeSpan(0, 0, 4));
+        }
+        else
+        {
+            _snackbarService.Show("Up to date",
+                "You are running the latest version.",
+                ControlAppearance.Info,
+                new SymbolIcon(SymbolRegular.CheckmarkCircle24),
+                new System.TimeSpan(0, 0, 3));
+        }
+    }
+
+    [RelayCommand]
+    private async Task ApplyUpdateAsync()
+    {
+        _snackbarService.Show("Updating...",
+            "Downloading and applying update. The app will restart automatically.",
+            ControlAppearance.Primary,
+            new SymbolIcon(SymbolRegular.ArrowSync24),
+            new System.TimeSpan(0, 0, 5));
+        await _updateService.DownloadAndApplyUpdateAsync();
     }
 }
 

@@ -16,7 +16,7 @@ using Wpf.Ui;
 using Wpf.Ui.Abstractions;
 using Wpf.Ui.Controls;
 using Wpf.Ui.DependencyInjection;
-
+using Velopack;
 
 namespace CS2_Echo.UI;
 
@@ -30,6 +30,8 @@ public partial class App : Application
 
     public App()
     {
+        VelopackApp.Build().Run();
+
         _host = Host.CreateDefaultBuilder().
             ConfigureServices((context, services) =>
             {
@@ -56,6 +58,8 @@ public partial class App : Application
                 services.AddSingleton<ITranslationProvider>(sp => sp.GetRequiredService<GeminiTranslationProvider>());
 
                 services.AddSingleton<TranslationService>();
+
+                services.AddSingleton<IUpdateService, UpdateService>();
 
                 services.AddNavigationViewPageProvider();
                 services.AddSingleton<INavigationService, NavigationService>();
