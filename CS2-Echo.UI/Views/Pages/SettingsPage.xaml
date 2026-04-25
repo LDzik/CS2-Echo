@@ -1,0 +1,98 @@
+﻿<Page x:Class="CS2_Echo.UI.Views.Pages.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:local="clr-namespace:CS2_Echo.UI.Views.Pages"
+      Title="SettingsPage"
+      Foreground="White"
+      Background="Transparent">
+
+    <StackPanel Margin="20" HorizontalAlignment="Left" MinWidth="600" MaxWidth="700">
+
+        <TextBlock Text="General Settings" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,20"/>
+
+        <ui:CardAction Command="{Binding BrowseFolderCommand}" Margin="0,0,0,10" Padding="15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ui:SymbolIcon Grid.Column="0" Symbol="FolderOpen24" FontSize="28" Foreground="White" Margin="0,0,15,0"/>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,15,0">
+                    <TextBlock Text="CS2 Folder Path" FontSize="16" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding LogFilePath, UpdateSourceTrigger=PropertyChanged}" Foreground="#AAAAAA" FontSize="12" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+            </Grid>
+        </ui:CardAction>
+
+        <ui:CardControl Margin="0,0,0,10">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <TextBlock Text="System Behaviors" FontWeight="SemiBold"/>
+                    <TextBlock Text="General application rules." FontSize="12" Foreground="#AAAAAA"/>
+                </StackPanel>
+            </ui:CardControl.Header>
+            <StackPanel>
+                <CheckBox Content="Minimize to System Tray on close" IsChecked="{Binding MinimizeToTray}" Margin="0,0,0,5"/>
+                <CheckBox Content="Enable Player Language Profiling" IsChecked="{Binding EnablePlayerStats}"/>
+            </StackPanel>
+        </ui:CardControl>
+
+        <TextBlock Text="Translation Engine" FontSize="20" FontWeight="SemiBold" Margin="0,20,0,10"/>
+
+        <ui:CardControl Margin="0,0,0,10">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <TextBlock Text="API Service" FontWeight="SemiBold"/>
+                    <TextBlock Text="Select the engine to process your translations." FontSize="12" Foreground="#AAAAAA"/>
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ComboBox ItemsSource="{Binding AvailableEngines}" SelectedItem="{Binding SelectedEngine}" Width="150"/>
+        </ui:CardControl>
+
+        <ui:CardControl Margin="0,0,0,10">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <TextBlock Text="Target Language" FontWeight="SemiBold"/>
+                    <TextBlock Text="The language code (e.g., 'en', 'pl') you want to read." FontSize="12" Foreground="#AAAAAA"/>
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ui:TextBox Text="{Binding TargetLanguageCode, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="en" Width="80"/>
+        </ui:CardControl>
+
+        <ui:CardControl Margin="0,0,0,10">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <TextBlock Text="Minimum Message Size" FontWeight="SemiBold"/>
+                    <TextBlock Text="Ignore very short messages (e.g., 'gg', 'lol')." FontSize="12" Foreground="#AAAAAA"/>
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ui:NumberBox Minimum="0" Value="{Binding MinMessageSize}" MaxDecimalPlaces="0" ClearButtonEnabled="False" SpinButtonPlacementMode="Hidden" Width="60"/>
+        </ui:CardControl>
+
+        <ui:CardControl Margin="0,0,0,25">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <TextBlock Text="API Keys" FontWeight="SemiBold"/>
+                    <TextBlock Text="Provide your secret keys for the selected services." FontSize="12" Foreground="#AAAAAA"/>
+                </StackPanel>
+            </ui:CardControl.Header>
+            <StackPanel Width="300">
+                <ui:PasswordBox x:Name="DeepLKeyBox" 
+                    PasswordChanged="DeepLKeyBox_PasswordChanged"
+                    PlaceholderText="DeepL API key..." 
+                    Margin="0,0,0,8" 
+                    ClearButtonEnabled="False"/>
+
+                <ui:PasswordBox x:Name="GeminiKeyBox" 
+                    PasswordChanged="GeminiKeyBox_PasswordChanged"
+                    PlaceholderText="Gemini API key..." 
+                    ClearButtonEnabled="False"/>
+
+            </StackPanel>
+        </ui:CardControl>
+
+        <ui:Button Content="Save Settings" Appearance="Primary" Command="{Binding ApplySettingsCommand}" Icon="{ui:SymbolIcon Save24}" Margin="0,0,0,40" Padding="20,10"/>
+        
+    </StackPanel>
+</Page>

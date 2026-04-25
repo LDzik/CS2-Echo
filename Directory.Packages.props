@@ -1,0 +1,16 @@
+﻿<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.6" />
+    <PackageVersion Include="Microsoft.Data.Sqlite" Version="10.0.6" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageVersion Include="System.Security.Cryptography.ProtectedData" Version="10.0.6" />
+    <PackageVersion Include="WPF-UI" Version="4.2.0" />
+    <PackageVersion Include="WPF-UI.Tray" Version="4.2.0" />
+    <PackageVersion Include="WPF-UI.DependencyInjection" Version="4.2.0" />
+    <PackageVersion Include="Google.GenAI" Version="1.6.1" />
+    <PackageVersion Include="DeepL.net" Version="1.21.0" />
+  </ItemGroup>
+</Project>

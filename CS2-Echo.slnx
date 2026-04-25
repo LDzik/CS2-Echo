@@ -1,0 +1,21 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/Elementy rozwiązania/">
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Project Path="CS2-Echo.Logic/CS2-Echo.Logic.csproj">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+  <Project Path="CS2-Echo.Domain/CS2-Echo.Domain.csproj">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+  <Project Path="CS2-Echo.Infrastructure/CS2-Echo.Infrastructure.csproj">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+  <Project Path="CS2-Echo.UI/CS2-Echo.UI.csproj">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+</Solution>

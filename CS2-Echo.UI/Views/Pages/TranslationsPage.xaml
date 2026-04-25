@@ -1,0 +1,234 @@
+﻿<Page x:Class="CS2_Echo.UI.Views.Pages.TranslationsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:local="clr-namespace:CS2_Echo.UI.Views.Pages"
+      xmlns:converters="clr-namespace:CS2_Echo.UI.Converters"
+      Title="TranslationsPage"
+      Foreground="White"
+      >
+
+    <Page.Resources>
+        <converters:LanguageToFlagConverter x:Key="LangToFlag"/>
+    </Page.Resources>
+    
+    <Grid MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}">
+    <Grid Margin="20" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <ui:Button Content="Ignore Selected Players" 
+                           Icon="{ui:SymbolIcon PersonDelete24}" 
+                           Appearance="Danger"
+                           Margin="0,0,10,0"
+                           Command="{Binding IgnoreMultiplePlayersCommand}"
+                           CommandParameter="{Binding ElementName=ChatListView, Path=SelectedItems}"/>
+                </StackPanel>
+        </Grid>
+
+        <ui:ListView Grid.Row="1" 
+                     x:Name="ChatListView"
+                     ItemsSource="{Binding ChatFeed}" 
+                     Background="Transparent"
+                     BorderThickness="0"
+                     Padding="0,0,0,10"
+                     SelectionMode="Multiple"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     VirtualizingPanel.ScrollUnit="Pixel"
+                     HorizontalContentAlignment="Stretch"
+                     >
+
+            <ui:ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border Padding="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto" MinWidth="120"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="{Binding Channel, StringFormat='[{0}] '}" Foreground="#FFB240" FontWeight="Bold"/>
+                                        <Border Width="16" Height="12" CornerRadius="2" Margin="0,0,6,0" VerticalAlignment="Center" ToolTip="Player's Primary Language">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="{Binding PrimaryLang, Converter={StaticResource LangToFlag}}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                            </Border.Background>
+                                        </Border>
+                                        <TextBlock Text="{Binding PlayerName}" FontWeight="SemiBold" Foreground="#E0E0E0"/>
+                                </StackPanel>
+                                    <Grid Margin="0,0,0,3">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Column="0" 
+                                           Text="{Binding SourceLang, StringFormat='[{0}] '}" 
+                                           FontSize="11" 
+                                           Foreground="#AAAAAA" 
+                                           ToolTip="{Binding ConfidenceLog}" 
+                                           Cursor="Help"
+                                           VerticalAlignment="Center"/>
+
+                                        <Border Grid.Column="1" 
+                                                Width="16" Height="12" 
+                                                CornerRadius="2" 
+                                                Margin="2,0,6,0" 
+                                                VerticalAlignment="Center">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="{Binding SourceLang, Converter={StaticResource LangToFlag}}" 
+                                                    Stretch="UniformToFill"
+                                                    RenderOptions.BitmapScalingMode="HighQuality"/>
+                                            </Border.Background>
+                                        </Border>
+
+                                        <TextBlock Grid.Column="2" 
+                                               Text="{Binding OriginalText}" 
+                                               FontSize="11" 
+                                               Foreground="#AAAAAA" 
+                                               TextWrapping="NoWrap" 
+                                               TextTrimming="CharacterEllipsis"
+                                               VerticalAlignment="Center"/>
+                                    </Grid>
+                                    <TextBlock Text="{Binding TranslatedText}" FontSize="14" FontWeight="Medium" TextWrapping="Wrap" Foreground="White"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" 
+                                        Orientation="Horizontal" 
+                                        HorizontalAlignment="Right" 
+                                        VerticalAlignment="Center">
+
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsMouseOver}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+
+                                    <ui:Button Icon="{ui:SymbolIcon PersonDelete24}" 
+                                           Appearance="Danger"
+                                           Margin="0,0,5,0"
+                                           Command="{Binding DataContext.IgnorePlayerCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                           CommandParameter="{Binding PlayerName}"
+                                           IsEnabled="{Binding CanIgnorePlayer}"
+                                           ToolTip="Ignore this Player"/>
+
+                                    <ui:Button Icon="{ui:SymbolIcon DocumentCopy24}" 
+                                        Appearance="Secondary"
+                                        Margin="0,0,5,0"
+                                        Command="{Binding DataContext.CopyToClipboardCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                        CommandParameter="{Binding OriginalText}"
+                                        ToolTip="Copy Original Text"/>
+
+                                <ui:Button Icon="{ui:SymbolIcon Copy24}" 
+                                        Appearance="Info"
+                                        Command="{Binding DataContext.CopyToClipboardCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                        CommandParameter="{Binding TranslatedText}"
+                                        ToolTip="Copy Translation"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ui:ListView.ItemTemplate>
+        </ui:ListView>
+
+        <Border Grid.Row="2" Background="#0AFFFFFF" BorderBrush="#33FFFFFF" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,15,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ui:TextBox Grid.Column="0" 
+                                PlaceholderText="Type a message to translate manually..." 
+                                Text="{Binding ManualInputText, UpdateSourceTrigger=PropertyChanged}" 
+                                Margin="0,0,10,0"/>
+
+                        <ui:TextBox Grid.Column="1" 
+                            PlaceholderText="eg. en, pl" 
+                            Text="{Binding ManualInputTargetLang, UpdateSourceTrigger=PropertyChanged}" 
+                            Margin="0,0,10,0"
+                            ClearButtonEnabled="False"
+                            Width="80"
+                                    />
+
+                        <ui:Button Grid.Column="2" 
+                               Content="Translate" 
+                               Icon="{ui:SymbolIcon Translate24}" 
+                               Appearance="Primary" 
+                               Command="{Binding TranslateManualCommand}"/>
+                </Grid>
+
+                    <Border Grid.Row="1" Background="#1A000000" CornerRadius="6" Padding="12" MinHeight="60">
+                        <Grid>
+                            <ProgressBar IsIndeterminate="True" VerticalAlignment="Center" Margin="50,0">
+                                <ProgressBar.Style>
+                                    <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsTranslating}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ProgressBar.Style>
+                            </ProgressBar>
+
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsTranslating}" Value="True">
+                                                <Setter Property="Visibility" Value="Hidden"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+
+                                <TextBlock Text="{Binding ManualOutputText}" 
+                                   Foreground="#E0E0E0" 
+                                   TextWrapping="Wrap" 
+                                   Margin="0,0,40,0" 
+                                   VerticalAlignment="Center"/>
+
+                                <ui:Button HorizontalAlignment="Right" 
+                                   VerticalAlignment="Bottom" 
+                                   Icon="{ui:SymbolIcon Copy24}" 
+                                   Appearance="Transparent" 
+                                   Command="{Binding DataContext.CopyToClipboardCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                   CommandParameter="{Binding ManualOutputText}"
+                                   ToolTip="Copy Result"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+        </Border>
+    </Grid>
+    </Grid>
+</Page>

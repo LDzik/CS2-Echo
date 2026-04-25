@@ -1,0 +1,81 @@
+# ===========================================
+# Visual Studio & .NET (Core / 10)
+# ===========================================
+
+# Visual Studio cache/options directory
+.vs/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio 2015/2017/2019/2022/2026 cache/options directory
+.vs/
+# Uncomment if you have tasks that create the project's static files in wwwroot
+#wwwroot/
+
+# MSBuild files
+*.[Cc]ache
+*.[Tt]racking
+
+# NuGet Packages
+*.nupkg
+# The packages folder can be ignored because of Package Reference restore
+**/[Pp]ackages/*
+# except build/, which is used as an MSBuild target.
+!**/[Pp]ackages/build/
+# Uncomment if necessary however generally it will be regenerated when needed
+#nuget.exe
+#nuget.targets
+
+# ReSharper / JetBrains Rider
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+.idea/
+
+# SQLite databases (Just in case you do local DB testing in your project folder)
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Mac background info that might appear if moving between OSs
+.DS_Store
+
+# ===========================================
+# Custom Project Exclusions
+# ===========================================
+
+# Ignore the Context documents folder
+A-CONTENT/

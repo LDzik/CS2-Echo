@@ -1,0 +1,58 @@
+﻿<Window x:Class="CS2_Echo.UI.Views.OverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        Title="CS2 Echo Overlay" Height="400" Width="380"
+        AllowsTransparency="True" WindowStyle="None" Background="Transparent" Topmost="True"
+        ShowInTaskbar="False" Loaded="Window_Loaded" Closed="Window_Closed" ResizeMode="NoResize">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="4" ShadowDepth="1" Opacity="1"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border x:Name="OverlayContainer" Background="#99000000" CornerRadius="8" Margin="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="HeaderBar" Grid.Row="0" Background="#E61E1E1E" MouseLeftButtonDown="HeaderBar_MouseLeftButtonDown">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="10,8">
+                    <TextBlock Text="Overlay Unlocked" Foreground="White" FontWeight="Bold" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="ShortcutHintText" Text="Press Ctrl+Shift+O to Lock" Foreground="#FFB240" FontSize="11" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <ui:Button Grid.Column="1" Icon="{ui:SymbolIcon Dismiss24}" Appearance="Transparent" Foreground="#AAAAAA" Margin="0,0,5,0" Click="CloseButton_Click" ToolTip="Close Overlay"/>
+            </Grid>
+
+            <ScrollViewer x:Name="ChatScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl x:Name="ChatItemsControl" ItemsSource="{Binding ChatFeed}" Margin="10">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,0,0,10">
+                                <StackPanel Orientation="Horizontal" Opacity="0.9" Margin="0,0,0,2">
+                                    <TextBlock Text="{Binding Channel, StringFormat='[{0}] '}" Foreground="#FFB240" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding PlayerName, StringFormat='{}{0}: '}" Foreground="#E0E0E0" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding OriginalText}" Foreground="#AAAAAA" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" MaxWidth="200" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding TranslatedText}" Foreground="White" FontWeight="Medium" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=Window}}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</Window>

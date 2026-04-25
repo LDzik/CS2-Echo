@@ -1,0 +1,94 @@
+﻿<Page x:Class="CS2_Echo.UI.Views.Pages.OverlayPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="OverlayPage"
+      Foreground="White">
+
+    <Grid Margin="20">
+        <StackPanel HorizontalAlignment="Left" MinWidth="550" MaxWidth="600">
+
+            <TextBlock Text="In-Game Overlay &amp; Quick Translate" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,5"/>
+            <TextBlock Text="Requires CS2 to run in 'Fullscreen Windowed' (Borderless)." Foreground="#FFB240" FontWeight="Medium" Margin="0,0,0,25"/>
+
+            <ui:CardAction Command="{Binding LaunchOverlayCommand}" Margin="0,0,0,30" Padding="15" Background="#1AFFFFFF">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ui:SymbolIcon Grid.Column="0" Symbol="Open24" FontSize="28" Foreground="White" Margin="0,0,15,0"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Launch Overlay" FontSize="16" FontWeight="SemiBold"/>
+                        <TextBlock Text="Opens the draggable overlay window." Foreground="#AAAAAA" FontSize="12"/>
+                    </StackPanel>
+                </Grid>
+            </ui:CardAction>
+
+            <TextBlock Text="Customization" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,15"/>
+
+            <ui:CardControl Margin="0,0,0,10">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock Text="Toggle Hotkey" FontWeight="SemiBold"/>
+                        <TextBlock Text="The key pressed with Ctrl + Alt to lock/unlock the overlay." FontSize="12" Foreground="#AAAAAA"/>
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Ctrl + Shift + " VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,10,0"/>
+                    <ui:TextBox Grid.Column="1" Text="{Binding HotkeyLetter, UpdateSourceTrigger=PropertyChanged}" MaxLength="1" Width="50" CharacterCasing="Upper" ClearButtonEnabled="False"/>
+                </Grid>
+            </ui:CardControl>
+
+            <ui:CardControl Margin="0,0,0,10">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock Text="Quick Translate Hotkey" FontWeight="SemiBold"/>
+                        <TextBlock Text="The key pressed with Ctrl + Alt to open the typing box." FontSize="12" Foreground="#AAAAAA"/>
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Ctrl + Shift + " VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,10,0"/>
+                    <ui:TextBox Grid.Column="1" Text="{Binding QuickTranslateHotkeyLetter, UpdateSourceTrigger=PropertyChanged}" MaxLength="1" Width="50" CharacterCasing="Upper" ClearButtonEnabled="False"/>
+                </Grid>
+            </ui:CardControl>
+
+            <ui:CardControl Margin="0,0,0,10">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock Text="Chat Font Size" FontWeight="SemiBold"/>
+                        <TextBlock Text="Adjust the size of the translated text." FontSize="12" Foreground="#AAAAAA"/>
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding FontSize, StringFormat='{}{0} px'}" VerticalAlignment="Center" Width="40" Margin="0,0,10,0"/>
+                    <Slider Minimum="10" Maximum="24" Value="{Binding FontSize}" TickFrequency="1" IsSnapToTickEnabled="True" Width="150" VerticalAlignment="Center"/>
+                </StackPanel>
+            </ui:CardControl>
+
+            <ui:CardControl Margin="0,0,0,25">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock Text="Locked Background Opacity" FontWeight="SemiBold"/>
+                        <TextBlock Text="Set to 0% for a completely transparent background." FontSize="12" Foreground="#AAAAAA"/>
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding LockedOpacity, StringFormat='{}{0:P0}'}" VerticalAlignment="Center" Width="40" Margin="0,0,10,0"/>
+                    <Slider Minimum="0.0" Maximum="0.9" Value="{Binding LockedOpacity}" TickFrequency="0.05" IsSnapToTickEnabled="True" Width="150" VerticalAlignment="Center"/>
+                </StackPanel>
+            </ui:CardControl>
+
+            <ui:Button Content="Save Settings" Appearance="Primary" Command="{Binding SaveSettingsCommand}" Icon="{ui:SymbolIcon Save24}" Margin="0,0,0,40" Padding="20,10"/>
+        </StackPanel>
+    </Grid>
+</Page>

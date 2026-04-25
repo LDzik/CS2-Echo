@@ -1,0 +1,74 @@
+﻿<Window x:Class="CS2_Echo.UI.Views.QuickTranslateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        Title="Quick Translate" Height="100" Width="600"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent" 
+        Topmost="True" WindowStartupLocation="CenterScreen" ShowInTaskbar="False"
+        Activated="Window_Activated" Deactivated="Window_Deactivated">
+
+    <Grid>
+        <Border Background="#E6101010" CornerRadius="8" BorderBrush="#44FFFFFF" BorderThickness="1" Margin="15">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="25" Opacity="0.8" ShadowDepth="8"/>
+            </Border.Effect>
+
+            <Grid Margin="15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ui:TextBox x:Name="LangBox" Grid.Column="0" 
+                            Text="{Binding TargetLanguage, UpdateSourceTrigger=PropertyChanged}" 
+                            Width="55" 
+                            PlaceholderText="Lang"
+                            TextAlignment="Center"
+                            CharacterCasing="Lower"
+                            ClearButtonEnabled="False"
+                            FontWeight="SemiBold" Foreground="#FFB240"
+                            />
+                <Border Grid.Column="1" Width="1" Background="#33FFFFFF" Margin="5"/>
+                
+                <ui:TextBox x:Name="MessageBox" Grid.Column="2" 
+                            Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" 
+                            PlaceholderText="Type message to translate and press Enter..." 
+                            PreviewKeyDown="MessageBox_PreviewKeyDown"
+                            ClearButtonEnabled="False"
+                            />
+
+                <Grid Grid.Column="3" Width="40" Margin="5,0,0,0">
+
+                    <ui:ProgressRing IsIndeterminate="True" Width="20" Height="20" Foreground="#FFB240">
+                        <ui:ProgressRing.Style>
+                            <Style TargetType="ui:ProgressRing" BasedOn="{StaticResource {x:Type ui:ProgressRing}}">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsTranslating}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:ProgressRing.Style>
+                    </ui:ProgressRing>
+
+                    <ui:SymbolIcon Symbol="Checkmark24" FontSize="24" Foreground="#4CAF50">
+                        <ui:SymbolIcon.Style>
+                            <Style TargetType="ui:SymbolIcon">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSuccess}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:SymbolIcon.Style>
+                    </ui:SymbolIcon>
+
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
