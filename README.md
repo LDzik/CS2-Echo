@@ -29,6 +29,15 @@ CS2 Echo is a desktop application that monitors Counter-Strike 2's console in re
 3. **Launch and Configure:**
    Run `CS2 Echo`. Open the Settings tab and ensure your CS2 Folder Path is correct (it usually defaults to `C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\`). Select your preferred translation engine and enter your API keys if using DeepL or Gemini (Google Translate is provided as a free option requiring no key).
 
+## Keeping the App Updated
+
+CS2 Echo features a built-in auto-updater. You do not need to download new installers from GitHub when a new version drops!
+
+1. Open the **Info** page from the main dashboard's footer menu.
+2. Click the **Check for Updates** button.
+3. If an update is found, you can read the latest release notes right there.
+4. Click **Install & Restart** to automatically apply the update and relaunch the app.
+
 ## Usage Guide
 
 ### The In-Game Overlay
