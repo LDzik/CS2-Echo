@@ -77,34 +77,41 @@ public class DatabaseService : IDisposable
         }
     }
 
-    public async Task<string?> GetCachedTranslationAsync(string originalText, string targetLang)
+    public async Task<(string? TranslatedText, string? SourceLang)> GetCachedTranslationAsync(string originalText, string targetLang)
     {
         if (string.IsNullOrEmpty(originalText) || originalText.Length < MinMessageSize)
-            return null;
+            return (null, null);
 
         await _dbLock.WaitAsync();
         try
         {
             var cmd = _connection.CreateCommand();
-            cmd.CommandText = "SELECT TranslatedText FROM Translations WHERE OriginalText = $originalText AND TargetLang = $targetLang";
+            cmd.CommandText = "SELECT TranslatedText, SourceLang FROM Translations WHERE OriginalText = $originalText AND TargetLang = $targetLang";
             cmd.Parameters.AddWithValue("$originalText", originalText);
             cmd.Parameters.AddWithValue("$targetLang", targetLang);
 
-            var result = await cmd.ExecuteScalarAsync() as string;
+            string? translatedText = null;
+            string? sourceLang = null;
 
-            if (result != null)
+            using var reader = await cmd.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                translatedText = reader.GetString(0);
+                sourceLang = reader.GetString(1);
+            }
+
+            if (translatedText != null)
             {
                 await UpdateLastAccessedAsync(originalText, targetLang);
             }
 
-            return result;
-            //return originalText; // debug translation skip
+            return (translatedText, sourceLang);
+            //return (originalText, targetLang); // debug translation skip
         }
         finally
         {
             _dbLock.Release();
         }
-        
     }
 
     public async Task SaveTranslationAsync(string originalText, string translatedText, string sourceLang, string targetLang)

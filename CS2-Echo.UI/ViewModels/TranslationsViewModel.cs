@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CS2_Echo.Infrastructure.Services;
 using CS2_Echo.UI.Models;
 using CS2_Echo.UI.Services;
+using DeepL.Model;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -27,6 +28,7 @@ public partial class TranslationsViewModel : ObservableObject
     [ObservableProperty] public partial string ManualInputTargetLang { get; set; }
     [ObservableProperty] public partial string ManualOutputText { get; set; }
     [ObservableProperty] public partial bool IsTranslating { get; set; }
+    [ObservableProperty] public partial bool ShowPlayerStats { get; set; }
 
     public TranslationsViewModel(
         ChatFeedService chatFeedService,
@@ -42,6 +44,22 @@ public partial class TranslationsViewModel : ObservableObject
         _snackbarService = snackbarService;
         _configService = configService;
 
+        ShowPlayerStats = _configService.Current.EnablePlayerStats;
+        ManualInputTargetLang = _configService.Current.LastQuickTranslateLang ?? "en";
+
+        _configService.OnConfigurationChanged += () =>
+        {
+            Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                ShowPlayerStats = _configService.Current.EnablePlayerStats;
+
+                var latestLang = _configService.Current.LastQuickTranslateLang ?? "en";
+                if (ManualInputTargetLang != latestLang)
+                {
+                    ManualInputTargetLang = latestLang;
+                }
+            });
+        };
     }
 
     [RelayCommand]
@@ -53,6 +71,14 @@ public partial class TranslationsViewModel : ObservableObject
         if (string.IsNullOrWhiteSpace(ManualInputTargetLang)) {
             _snackbarService.Show("Error", "Please specify a target language code (e.g., 'en' for English).", ControlAppearance.Danger, new SymbolIcon(SymbolRegular.ErrorCircle24), TimeSpan.FromSeconds(3));
             return;
+        }
+
+        if (!_configService.Current.LastQuickTranslateLang.Equals(ManualInputTargetLang, StringComparison.OrdinalIgnoreCase))
+        {
+            _configService.Update(config => config with 
+            { 
+                LastQuickTranslateLang = ManualInputTargetLang.ToLower()
+            });
         }
 
         IsTranslating = true;

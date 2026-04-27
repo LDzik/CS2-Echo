@@ -26,6 +26,19 @@ public partial class QuickTranslateViewModel : ObservableObject
 
         TargetLanguage = _configService.Current.LastQuickTranslateLang ?? "en";
         InputText = string.Empty;
+
+        _configService.OnConfigurationChanged += () =>
+        {
+            Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                var latestLang = _configService.Current.LastQuickTranslateLang ?? "en";
+
+                if (TargetLanguage != latestLang)
+                {
+                    TargetLanguage = latestLang;
+                }
+            });
+        };
     }
 
     [RelayCommand]

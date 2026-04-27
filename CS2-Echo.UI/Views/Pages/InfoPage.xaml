@@ -11,7 +11,7 @@
             <Image Source="/Assets/favicon.ico" Width="64" Height="64" Margin="0,0,20,0" RenderOptions.BitmapScalingMode="HighQuality"/>
             <StackPanel VerticalAlignment="Center">
                 <TextBlock Text="CS2 Echo" FontSize="32" FontWeight="Bold" Foreground="#E0E0E0"/>
-                <TextBlock Text="Version 1.1.0" FontSize="14" Foreground="#FFB240" FontWeight="Medium" Margin="0,0,0,5"/>
+                <TextBlock Text="Version 1.1.1" FontSize="14" Foreground="#FFB240" FontWeight="Medium" Margin="0,0,0,5"/>
                 <TextBlock Text="Live, seamless translations for Counter-Strike 2." FontSize="14" Foreground="#AAAAAA"/>
             </StackPanel>
         </StackPanel>
@@ -33,21 +33,34 @@
                     </StackPanel>
                 </Grid>
             </ui:CardControl.Header>
-            <StackPanel>
+            <StackPanel Orientation="Horizontal">
                 <ui:Button Content="Check for Updates" Command="{Binding CheckForUpdatesCommand}">
-                        <ui:Button.Style>
-                            <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsUpdateAvailable}" Value="True">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ui:Button.Style>
-                    </ui:Button>
+                    <ui:Button.Style>
+                        <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsUpdateAvailable}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:Button.Style>
+                </ui:Button>
 
-                <ui:Button Content="Install &amp; Restart" Appearance="Primary" Icon="{ui:SymbolIcon ArrowDownload24}" Command="{Binding ApplyUpdateCommand}">
+                <ui:Button Content="Release Notes" Margin="0,0,10,0" Appearance="Secondary" Icon="{ui:SymbolIcon DocumentText24}" Click="ViewReleaseNotes_Click">
+                    <ui:Button.Style>
+                        <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsUpdateAvailable}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:Button.Style>
+                </ui:Button>
+
+                <ui:Button Content="Install &amp; Restart" Margin="0,0,10,0" Appearance="Primary" Icon="{ui:SymbolIcon ArrowDownload24}" Command="{Binding ApplyUpdateCommand}">
                     <ui:Button.Style>
                         <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -125,5 +138,15 @@
             </ui:CardControl.Header>
         </ui:CardControl>
 
+        <ui:ContentDialogHost x:Name="RootDialogHost" />
+
+        <ui:ContentDialog x:Name="ReleaseNotesDialog" Visibility="Collapsed" Title="Release Notes" PrimaryButtonText="Close">
+            <ScrollViewer x:Name="NotesScrollViewer" MaxHeight="400" MaxWidth="500" VerticalScrollBarVisibility="Auto">
+                <TextBlock Text="{Binding ReleaseNotes}" TextWrapping="Wrap" Foreground="#E0E0E0" Margin="0,10,15,10"/>
+            </ScrollViewer>
+        </ui:ContentDialog>
+
     </StackPanel>
+
+    
 </Page>

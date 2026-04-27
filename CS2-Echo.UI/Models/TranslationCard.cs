@@ -17,6 +17,5 @@ public partial class TranslationCard : ObservableObject
     [ObservableProperty] public partial string PrimaryLang { get; set; }
 
     [ObservableProperty] public partial bool CanIgnorePlayer { get; set; } = true;
-    [ObservableProperty] public partial bool CanIgnoreLanguage { get; set; } = true;
 }
 

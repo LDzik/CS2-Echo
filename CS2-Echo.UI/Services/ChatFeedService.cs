@@ -59,7 +59,7 @@ public class ChatFeedService : IDisposable
             if (!_filterService.ShouldTranslate(chatMsg, out string detectedLang, out string confidenceLog)) return;
 
             var result = await _translationService.TranslateAsync(chatMsg.Message, _configService.Current.TargetLanguage);
-
+            // result.ProviderName == "Cached"
             string finalLang = result.SourceLang switch { "cached" => detectedLang, null => detectedLang, _ => result.SourceLang };
 
             await _databaseService.LogPlayerLanguageAsync(chatMsg.PlayerName, finalLang);

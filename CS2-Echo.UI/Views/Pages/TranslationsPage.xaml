@@ -10,6 +10,7 @@
 
     <Page.Resources>
         <converters:LanguageToFlagConverter x:Key="LangToFlag"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
     
     <Grid MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}">
@@ -62,7 +63,8 @@
                             <StackPanel Grid.Column="0" Margin="0,0,15,0">
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                                     <TextBlock Text="{Binding Channel, StringFormat='[{0}] '}" Foreground="#FFB240" FontWeight="Bold"/>
-                                        <Border Width="16" Height="12" CornerRadius="2" Margin="0,0,6,0" VerticalAlignment="Center" ToolTip="Player's Primary Language">
+                                        <Border Width="16" Height="12" CornerRadius="2" Margin="0,0,6,0" VerticalAlignment="Center" ToolTip="Player's Primary Language"
+                                                Visibility="{Binding DataContext.ShowPlayerStats, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource BoolToVis}}">
                                             <Border.Background>
                                                 <ImageBrush ImageSource="{Binding PrimaryLang, Converter={StaticResource LangToFlag}}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
                                             </Border.Background>

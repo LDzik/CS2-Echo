@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CS2_Echo.Logic.Interfaces;
+using CS2_Echo.UI.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +13,8 @@ namespace CS2_Echo.UI.ViewModels;
 
 public partial class InfoViewModel : ObservableObject
 {
-    
+
+    [ObservableProperty] public partial string ReleaseNotes { get; set; } = "Checking for notes...";
 
     private const string GitHubRepoUrl = "https://github.com/LDzik/CS2-Echo";
     private const string BugReportUrl = "https://github.com/LDzik/CS2-Echo/issues";
@@ -63,6 +65,8 @@ public partial class InfoViewModel : ObservableObject
 
         if (IsUpdateAvailable)
         {
+            ReleaseNotes = _updateService.LatestReleaseNotes;
+
             _snackbarService.Show("Update Found",
                 "A new version of CS2 Echo is available!",
                 ControlAppearance.Success,

@@ -27,12 +27,21 @@ public partial class InfoPage : Page
         InitializeComponent();
         _viewModel = viewModel;
         DataContext = _viewModel;
+
+        ReleaseNotesDialog.DialogHostEx = RootDialogHost;
     }
 
     private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
     {
         Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
         e.Handled = true;
+    }
+
+    private async void ViewReleaseNotes_Click(object sender, RoutedEventArgs e)
+    {
+        NotesScrollViewer.ScrollToTop();
+
+        await ReleaseNotesDialog.ShowAsync();
     }
 }
 

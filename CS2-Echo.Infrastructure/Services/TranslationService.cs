@@ -45,9 +45,9 @@ public class TranslationService
             return (text, "unknown", "none");
 
         var cached = await _dbService.GetCachedTranslationAsync(text, targetLang);
-        if (!string.IsNullOrEmpty(cached))
+        if (!string.IsNullOrEmpty(cached.TranslatedText) && !string.IsNullOrEmpty(cached.SourceLang))
         {
-            return (cached, "cached", "SQLite Cache");
+            return (cached.TranslatedText, cached.SourceLang, "Cached");
         }
 
         var provider = ActiveProvider;

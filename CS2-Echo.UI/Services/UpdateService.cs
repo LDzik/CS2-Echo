@@ -12,6 +12,8 @@ public class UpdateService : IUpdateService
 
     private UpdateInfo? _pendingUpdate;
 
+    public string LatestReleaseNotes { get; private set; } = string.Empty;
+
     private GithubSource GetUpdateSource()
     {
         return new GithubSource("https://github.com/LDzik/CS2-Echo", accessToken: null, prerelease: false);
@@ -24,7 +26,13 @@ public class UpdateService : IUpdateService
             if (!mgr.IsInstalled) return false;
 
             _pendingUpdate = await mgr.CheckForUpdatesAsync();
-            return _pendingUpdate != null;
+
+            if (_pendingUpdate != null) {
+                LatestReleaseNotes = _pendingUpdate.TargetFullRelease.NotesMarkdown ?? "No release notes provided.";
+                return true;
+            }
+
+            return false;
         }
         catch (Exception ex)
         {
@@ -41,5 +49,7 @@ public class UpdateService : IUpdateService
         await mgr.DownloadUpdatesAsync(_pendingUpdate);
         mgr.ApplyUpdatesAndRestart(_pendingUpdate);
     }
+
+
 }
 

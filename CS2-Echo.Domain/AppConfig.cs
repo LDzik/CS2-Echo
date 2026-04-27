@@ -14,8 +14,8 @@ public record AppConfig
     public string GeminiApiKey { get; init; } = "";
     public string TargetLanguage { get; init; } = "en";
     public int MinMessageSize { get; init; } = 3;
-    public bool EnablePlayerStats { get; init; } = true;
-    public bool MinimizeToTray { get; init; } = true;
+    public bool EnablePlayerStats { get; init; } = false;
+    public bool MinimizeToTray { get; init; } = false;
 
     public double OverlayLockedOpacity { get; init; } = 0.4;
     public int OverlayFontSize { get; init; } = 14;

@@ -32,7 +32,7 @@
                 <ui:CardControl.Header>
                     <StackPanel>
                         <TextBlock Text="Toggle Hotkey" FontWeight="SemiBold"/>
-                        <TextBlock Text="The key pressed with Ctrl + Alt to lock/unlock the overlay." FontSize="12" Foreground="#AAAAAA"/>
+                        <TextBlock Text="The key pressed with Ctrl + Shift to lock/unlock the overlay." FontSize="12" Foreground="#AAAAAA"/>
                     </StackPanel>
                 </ui:CardControl.Header>
                 <Grid>
@@ -49,7 +49,7 @@
                 <ui:CardControl.Header>
                     <StackPanel>
                         <TextBlock Text="Quick Translate Hotkey" FontWeight="SemiBold"/>
-                        <TextBlock Text="The key pressed with Ctrl + Alt to open the typing box." FontSize="12" Foreground="#AAAAAA"/>
+                        <TextBlock Text="The key pressed with Ctrl + Shift to open the typing box." FontSize="12" Foreground="#AAAAAA"/>
                     </StackPanel>
                 </ui:CardControl.Header>
                 <Grid>

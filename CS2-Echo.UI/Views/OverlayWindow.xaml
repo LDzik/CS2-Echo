@@ -45,6 +45,7 @@
                                 <StackPanel Orientation="Horizontal" Opacity="0.9" Margin="0,0,0,2">
                                     <TextBlock Text="{Binding Channel, StringFormat='[{0}] '}" Foreground="#FFB240" FontWeight="Bold"/>
                                     <TextBlock Text="{Binding PlayerName, StringFormat='{}{0}: '}" Foreground="#E0E0E0" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding SourceLang, StringFormat='[{0}] '}" Foreground="#AAAAAA" FontWeight="SemiBold"/>
                                     <TextBlock Text="{Binding OriginalText}" Foreground="#AAAAAA" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" MaxWidth="200" VerticalAlignment="Center"/>
                                 </StackPanel>
                                 <TextBlock Text="{Binding TranslatedText}" Foreground="White" FontWeight="Medium" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=Window}}" TextWrapping="Wrap"/>
