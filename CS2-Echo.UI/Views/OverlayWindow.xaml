@@ -39,11 +39,21 @@
 
             <ScrollViewer x:Name="ChatScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl x:Name="ChatItemsControl" ItemsSource="{Binding ChatFeed}" Margin="10">
+
+                    <ItemsControl.Resources>
+                        <DropShadowEffect x:Key="TextOutline" 
+                          Color="Black" 
+                          BlurRadius="4" 
+                          ShadowDepth="0" 
+                          Opacity="1.0" 
+                          RenderingBias="Performance"/>
+                    </ItemsControl.Resources>
+
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Margin="0,0,0,10">
+                            <StackPanel Margin="0,0,0,10" Effect="{StaticResource TextOutline}">
                                 <StackPanel Orientation="Horizontal" Opacity="0.9" Margin="0,0,0,2">
-                                    <TextBlock Text="{Binding Channel, StringFormat='[{0}] '}" Foreground="#FFB240" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Channel, StringFormat='[{0}] '}" Foreground="#FFB240" FontWeight="Bold" />
                                     <TextBlock Text="{Binding PlayerName, StringFormat='{}{0}: '}" Foreground="#E0E0E0" FontWeight="SemiBold"/>
                                     <TextBlock Text="{Binding SourceLang, StringFormat='[{0}] '}" Foreground="#AAAAAA" FontWeight="SemiBold"/>
                                     <TextBlock Text="{Binding OriginalText}" Foreground="#AAAAAA" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" MaxWidth="200" VerticalAlignment="Center"/>
