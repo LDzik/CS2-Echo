@@ -4,7 +4,7 @@
 [![Release](https://img.shields.io/github/v/release/LDzik/CS2-Echo)](https://github.com/LDzik/CS2-Echo/releases/latest)
 [![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)](#)
 
-CS2 Echo is a desktop application that monitors Counter-Strike 2's console in real-time to provide live chat translation. It features a transparent in-game overlay and customizable hotkeys, allowing players to easily communicate across different languages without interrupting their gameplay.
+CS2 Echo is a real-time CS2 translator and desktop application that monitors the Counter-Strike 2 console to provide live chat translation. It features a transparent in-game overlay and customizable hotkeys, allowing players to easily communicate across different languages without interrupting their gameplay.
 
 ![CS2 Echo Dashboard](docs/assets/dashboard-preview.png)
 
