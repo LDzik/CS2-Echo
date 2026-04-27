@@ -103,11 +103,12 @@ public partial class SettingsViewModel : ObservableObject
         {
             _snackbarService.Show("Missing API Key", "Gemini requires an API key. Defaulting to Google.", ControlAppearance.Caution, new SymbolIcon(SymbolRegular.Warning24), new System.TimeSpan(0, 0, 4));
             SelectedEngine = EngineNames.Google;
-        } else
+        }
+        else
         {
             _snackbarService.Show(
                 "Settings Saved",
-                $"Engine set to {SelectedEngine} and log monitor updated.",
+                "Your configuration has been updated successfully.",
                 ControlAppearance.Success,
                 new SymbolIcon(SymbolRegular.Checkmark24),
                 new System.TimeSpan(0, 0, 3));

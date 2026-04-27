@@ -13,16 +13,16 @@ public class ChatParser
     // ^
     // (?<datetime>\d{2}\/\d{2} \d{2}:\d{2}:\d{2}) - datetime - 03/17 15:28:27
     // \s{2}\[ - format for all chat logs
-    // (?<channel>ALL|T|CT) - channel type (ALL, T, CT) ([\w+] for other languages?) - [ALL]
+    // (?<channel>[^\]]+) - channel type - [ALL]
     // \]\s+
     // (?<name>.*?) - player name - Player1
     // (?:﹫(?<location>[^:]*?))? - optional location part if there is ﹫ - Location1
-    // (?:\s+\[(?<status>DEAD)\])? - optional status part if there is [DEAD] (maybe [\w+] is enough for other languages?) - DEAD
+    // (?:\s+\[(?<status>[^\]]+)\])? - optional status part if there is [DEAD] - DEAD
     // :\s+
     // (?<message>.*) - message
     // $
     private static readonly Regex ChatRegex = new Regex(
-        @"^(?<datetime>\d{2}\/\d{2} \d{2}:\d{2}:\d{2})\s{2}\[(?<channel>ALL|T|CT)\]\s+(?<name>.*?)(?:﹫(?<location>[^:]*?))?(?:\s+\[(?<status>DEAD)\])?:\s+(?<message>.*)$",
+        @"^(?<datetime>\d{2}\/\d{2} \d{2}:\d{2}:\d{2})\s{2}\[(?<channel>[^\]]+)\]\s+(?<name>.*?)(?:﹫(?<location>[^:]*?))?(?:\s+\[(?<status>[^\]]+)\])?:\s+(?<message>.*)$",
         RegexOptions.Compiled);
 
 

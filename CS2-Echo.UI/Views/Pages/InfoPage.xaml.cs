@@ -43,5 +43,24 @@ public partial class InfoPage : Page
 
         await ReleaseNotesDialog.ShowAsync();
     }
+
+    private void MarkdownHyperlink_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+        if (e.Parameter is string url)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                });
+            }
+            catch
+            {
+                // blocked
+            }
+        }
+    }
 }
 
