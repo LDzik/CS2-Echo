@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CS2_Echo.Domain;
 using CS2_Echo.Infrastructure.Services;
 using CS2_Echo.Infrastructure.TranslationProviders;
+using CS2_Echo.Infrastructure.Utilities;
 using CS2_Echo.Logic.Interfaces;
 using CS2_Echo.Logic.Constants;
 using System;
@@ -86,6 +87,32 @@ public partial class SettingsViewModel : ObservableObject
         if (dialog.ShowDialog() == true)
         {
             LogFilePath = dialog.FolderName;
+        }
+    }
+
+    [RelayCommand]
+    private void AutoDetectFolder()
+    {
+        string? foundPath = SteamLocator.FindCS2InstallPath();
+
+        if (!string.IsNullOrWhiteSpace(foundPath))
+        {
+            LogFilePath = foundPath;
+            _snackbarService.Show(
+                "CS2 Located",
+                "Successfully found your Counter-Strike 2 installation directory.",
+                ControlAppearance.Success,
+                new SymbolIcon(SymbolRegular.Checkmark24),
+                new TimeSpan(0, 0, 3));
+        }
+        else
+        {
+            _snackbarService.Show(
+                "Auto-Detect Failed",
+                "Could not locate CS2 in your Steam library. Please browse manually.",
+                ControlAppearance.Danger,
+                new SymbolIcon(SymbolRegular.Dismiss24),
+                new TimeSpan(0, 0, 4));
         }
     }
 

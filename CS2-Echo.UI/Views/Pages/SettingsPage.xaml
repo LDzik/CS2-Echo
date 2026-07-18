@@ -21,19 +21,35 @@
 
             <TextBlock Text="General Settings" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,20"/>
 
-            <ui:CardAction Command="{Binding BrowseFolderCommand}" Margin="0,0,0,10" Padding="15">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <ui:SymbolIcon Grid.Column="0" Symbol="FolderOpen24" FontSize="28" Foreground="White" Margin="0,0,15,0"/>
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,15,0">
-                        <TextBlock Text="CS2 Folder Path" FontSize="16" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding LogFilePath, UpdateSourceTrigger=PropertyChanged}" Foreground="#AAAAAA" FontSize="12" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
-                    </StackPanel>
-                </Grid>
-            </ui:CardAction>
+            <ui:CardControl Margin="0,0,0,10" Padding="15">
+                <ui:CardControl.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ui:SymbolIcon Grid.Column="0" Symbol="FolderOpen24" FontSize="28" Foreground="White" Margin="0,0,15,0"/>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,15,0">
+                            <TextBlock Text="CS2 Folder Path" FontSize="16" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding LogFilePath, UpdateSourceTrigger=PropertyChanged}" Foreground="#AAAAAA" FontSize="12" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
+                </ui:CardControl.Header>
+
+                <!-- Action Buttons aligned to the right -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <ui:Button Content="Auto-Detect" 
+                               Command="{Binding AutoDetectFolderCommand}" 
+                               Appearance="Secondary" 
+                               Icon="{ui:SymbolIcon Search24}" 
+                               Margin="0,0,10,0"/>
+
+                    <ui:Button Content="Browse..." 
+                               Command="{Binding BrowseFolderCommand}" 
+                               Appearance="Secondary" 
+                               Icon="{ui:SymbolIcon Folder24}"/>
+                </StackPanel>
+            </ui:CardControl>
 
             <ui:CardControl Margin="0,0,0,10">
                 <ui:CardControl.Header>

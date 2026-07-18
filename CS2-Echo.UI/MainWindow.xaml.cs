@@ -66,6 +66,15 @@ public partial class MainWindow : FluentWindow
             {
                 _overlayService.ShowOverlay(startLocked: true);
             }
+
+            if (!System.IO.Directory.Exists(_configService.Current.LogFilePath))
+            {
+                string? foundPath = CS2_Echo.Infrastructure.Utilities.SteamLocator.FindCS2InstallPath();
+                if (foundPath != null)
+                {
+                    _configService.Update(c => c with { LogFilePath = foundPath });
+                }
+            }
         };
 
         _quickTranslateWindow = new QuickTranslateWindow(quickTranslateViewModel);
