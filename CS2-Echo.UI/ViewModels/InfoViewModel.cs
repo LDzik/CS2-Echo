@@ -56,16 +56,6 @@ public partial class InfoViewModel : ObservableObject
     {
         _updateService = updateService;
         _snackbarService = snackbarService;
-
-#if DEBUG
-        IsUpdateAvailable = true;
-        ReleaseNotes = @"## What's New in v1.3.0
-### New Features
-* **Steam Auto-Start Integration:** Tested working!
-* **Auto-Detect Folder:** Also working!
-* [Link test (Click me)](https://github.com/LDzik/CS2-Echo)
-";
-#endif
     }
 
     [RelayCommand]

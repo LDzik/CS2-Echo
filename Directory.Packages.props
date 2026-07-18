@@ -7,7 +7,6 @@
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.6" />
     <PackageVersion Include="Microsoft.Data.Sqlite" Version="10.0.6" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-    <PackageVersion Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.12" />
     <PackageVersion Include="System.Security.Cryptography.ProtectedData" Version="10.0.6" />
     <PackageVersion Include="Velopack" Version="1.2.0" />
     <PackageVersion Include="WPF-UI" Version="4.2.0" />
