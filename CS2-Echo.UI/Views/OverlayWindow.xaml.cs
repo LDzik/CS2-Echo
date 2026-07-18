@@ -87,6 +87,18 @@ public partial class OverlayWindow : Window
         });
     }
 
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+        base.OnSourceInitialized(e);
+
+        if (!double.IsNaN(_configService.Current.OverlayX) && !double.IsNaN(_configService.Current.OverlayY))
+        {
+            this.WindowStartupLocation = WindowStartupLocation.Manual;
+            this.Left = _configService.Current.OverlayX;
+            this.Top = _configService.Current.OverlayY;
+        }
+    }
+
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
         _windowHandle = new WindowInteropHelper(this).Handle;
@@ -109,11 +121,11 @@ public partial class OverlayWindow : Window
             SetUnlockedState();
         }
 
-        if (!double.IsNaN(_configService.Current.OverlayX) && !double.IsNaN(_configService.Current.OverlayY))
-        {
-            this.Left = _configService.Current.OverlayX;
-            this.Top = _configService.Current.OverlayY;
-        }
+        //if (!double.IsNaN(_configService.Current.OverlayX) && !double.IsNaN(_configService.Current.OverlayY))
+        //{
+        //    this.Left = _configService.Current.OverlayX;
+        //    this.Top = _configService.Current.OverlayY;
+        //}
 
         ChatScrollViewer.ScrollToEnd();
     }

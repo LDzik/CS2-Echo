@@ -153,8 +153,16 @@ public partial class App : Application
         await filterService.InitializeAsync();
 
         var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-        mainWindow.Show();
-        
+        if (WasLaunchedViaSteam)
+        {
+            mainWindow.WindowState = WindowState.Minimized;
+            mainWindow.Show();
+        }
+        else
+        {
+            mainWindow.Show();
+        }
+
     }
 
     private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
