@@ -28,6 +28,8 @@ public partial class App : Application
 
     private readonly IHost _host;
 
+    public static bool WasLaunchedViaSteam { get; private set; }
+
     public App()
     {
         VelopackApp.Build().Run();
@@ -100,6 +102,45 @@ public partial class App : Application
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
 
+        // auto launch cs2
+        if (e.Args.Length > 0)
+        {
+            int cs2Index = -1;
+            for (int i = 0; i < e.Args.Length; i++)
+            {
+                if (e.Args[i].EndsWith("cs2.exe", StringComparison.OrdinalIgnoreCase))
+                {
+                    cs2Index = i;
+                    break;
+                }
+            }
+
+            if (cs2Index != -1)
+            {
+                WasLaunchedViaSteam = true;
+                string cs2Path = e.Args[cs2Index];
+
+                try
+                {
+                    var psi = new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = cs2Path,
+                        UseShellExecute = true
+                    };
+
+                    for (int i = cs2Index + 1; i < e.Args.Length; i++)
+                    {
+                        psi.ArgumentList.Add(e.Args[i]);
+                    }
+
+                    System.Diagnostics.Process.Start(psi);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Failed to proxy launch CS2: {ex.Message}");
+                }
+            }
+        }
 
         base.OnStartup(e);
 

@@ -29,6 +29,7 @@ public partial class TranslationsViewModel : ObservableObject
     [ObservableProperty] public partial string ManualOutputText { get; set; }
     [ObservableProperty] public partial bool IsTranslating { get; set; }
     [ObservableProperty] public partial bool ShowPlayerStats { get; set; }
+    [ObservableProperty] public partial bool IsCondebugMissing { get; set; }
 
     public TranslationsViewModel(
         ChatFeedService chatFeedService,
@@ -60,6 +61,10 @@ public partial class TranslationsViewModel : ObservableObject
                 }
             });
         };
+
+
+        string currentOptions = CS2_Echo.Infrastructure.Utilities.SteamLocator.GetCS2LaunchOptions();
+        IsCondebugMissing = !currentOptions.Contains("-condebug", StringComparison.OrdinalIgnoreCase);
     }
 
     [RelayCommand]

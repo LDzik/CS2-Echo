@@ -64,6 +64,44 @@
                 </StackPanel>
             </ui:CardControl>
 
+            <TextBlock Text="Steam Integration" FontSize="20" FontWeight="SemiBold" Margin="0,20,0,10"/>
+
+            <ui:CardControl Margin="0,0,0,10" Padding="15">
+                <ui:CardControl.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ui:SymbolIcon Grid.Column="0" Symbol="Play24" FontSize="28" Foreground="White" Margin="0,0,15,0"/>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Auto-Start with CS2" FontSize="16" FontWeight="SemiBold"/>
+                            <TextBlock Text="Copy and paste this at the VERY BEGINNING into Steam -> CS2 -> Properties -> Launch Options." Foreground="#AAAAAA" FontSize="12" Margin="0,0,0,8" TextWrapping="Wrap"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Status: " FontSize="12" Foreground="#AAAAAA" />
+                                <TextBlock Text="{Binding LaunchStatusText, Mode=OneWay}" FontSize="12" Foreground="{Binding LaunchStatusColor, Mode=OneWay}" FontWeight="SemiBold" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </ui:CardControl.Header>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <ui:TextBox Text="{Binding LaunchOptionString, Mode=OneWay}" IsReadOnly="True" Width="150" Margin="0,0,10,0"/>
+
+                    <!-- New Verify Button -->
+                    <ui:Button Content="Verify" 
+                               Command="{Binding VerifyLaunchOptionsCommand}" 
+                               Appearance="Secondary" 
+                               Icon="{ui:SymbolIcon CheckmarkCircle24}"
+                               Margin="0,0,10,0"/>
+
+                    <ui:Button Content="Copy" 
+                               Command="{Binding CopyLaunchOptionCommand}" 
+                               Appearance="Secondary" 
+                               Icon="{ui:SymbolIcon Copy24}"/>
+                </StackPanel>
+            </ui:CardControl>
+            
             <TextBlock Text="Translation Engine" FontSize="20" FontWeight="SemiBold" Margin="0,20,0,10"/>
 
             <ui:CardControl Margin="0,0,0,10">

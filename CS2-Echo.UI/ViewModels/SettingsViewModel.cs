@@ -33,6 +33,11 @@ public partial class SettingsViewModel : ObservableObject
     [ObservableProperty] public partial bool MinimizeToTray { get; set; }
     public ObservableCollection<string> AvailableEngines { get; }
 
+    public bool IsLaunchVerified => App.WasLaunchedViaSteam;
+    [ObservableProperty] public partial string LaunchOptionString { get; set; }
+    [ObservableProperty] public partial string LaunchStatusText { get; set; } = "Waiting for verification...";
+    [ObservableProperty] public partial string LaunchStatusColor { get; set; } = "#AAAAAA";
+
     private string? _tempDeepLKey;
     private string? _tempGeminiKey;
 
@@ -73,6 +78,9 @@ public partial class SettingsViewModel : ObservableObject
         EnablePlayerStats = _configService.Current.EnablePlayerStats;
         TargetLanguageCode = _configService.Current.TargetLanguage;
         MinimizeToTray = _configService.Current.MinimizeToTray;
+
+        string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName ?? "CS2_Echo.exe";
+        LaunchOptionString = $"\"{exePath}\" %command%";
     }
 
     [RelayCommand]
@@ -113,6 +121,37 @@ public partial class SettingsViewModel : ObservableObject
                 ControlAppearance.Danger,
                 new SymbolIcon(SymbolRegular.Dismiss24),
                 new TimeSpan(0, 0, 4));
+        }
+    }
+
+    [RelayCommand]
+    private void CopyLaunchOption()
+    {
+        System.Windows.Clipboard.SetText(LaunchOptionString);
+        _snackbarService.Show(
+            "Copied to Clipboard",
+            "Paste this exactly as is into your CS2 Steam Launch Options.",
+            ControlAppearance.Info,
+            new SymbolIcon(SymbolRegular.Copy24),
+            new TimeSpan(0, 0, 4));
+    }
+
+    [RelayCommand]
+    private void VerifyLaunchOptions()
+    {
+        string currentOptions = SteamLocator.GetCS2LaunchOptions();
+
+        if (currentOptions.Contains(LaunchOptionString, StringComparison.OrdinalIgnoreCase))
+        {
+            LaunchStatusText = "Verified: Working correctly";
+            LaunchStatusColor = "#4CAF50"; // Green
+            _snackbarService.Show("Verified", "Steam Launch Options are configured correctly.", ControlAppearance.Success, new SymbolIcon(SymbolRegular.Checkmark24), new TimeSpan(0, 0, 3));
+        }
+        else
+        {
+            LaunchStatusText = "Error: Not found or incorrect";
+            LaunchStatusColor = "#FF5722"; // Red/Orange
+            _snackbarService.Show("Verification Failed", "Could not find the exact string in your Steam Launch Options.", ControlAppearance.Danger, new SymbolIcon(SymbolRegular.Dismiss24), new TimeSpan(0, 0, 4));
         }
     }
 
