@@ -10,7 +10,7 @@
         <CommandBinding Command="{x:Static markdig:Commands.Hyperlink}" Executed="MarkdownHyperlink_Executed" />
     </Page.CommandBindings>
 
-    <StackPanel Margin="30" HorizontalAlignment="Left" MinWidth="550" MaxWidth="600">
+    <StackPanel Margin="30" HorizontalAlignment="Left" MinWidth="600" MaxWidth="700">
 
         <StackPanel Orientation="Horizontal" Margin="0,0,0,30">
             <Image Source="/Assets/favicon.ico" Width="64" Height="64" Margin="0,0,20,0" RenderOptions.BitmapScalingMode="HighQuality"/>
