@@ -30,6 +30,7 @@ public partial class OverlayViewModel : ObservableObject
     [ObservableProperty] public partial string QuickTranslateHotkeyLetter { get; set; } = "T";
     [ObservableProperty] public partial double LockedOpacity { get; set; }
     [ObservableProperty] public partial int FontSize { get; set; }
+    [ObservableProperty] public partial bool AutoLaunchOverlay { get; set; }
 
     public OverlayViewModel(
             ConfigurationService configService,
@@ -47,6 +48,7 @@ public partial class OverlayViewModel : ObservableObject
         FontSize = _configService.Current.OverlayFontSize;
         HotkeyLetter = _configService.Current.OverlayHotkey ?? "O";
         QuickTranslateHotkeyLetter = _configService.Current.QuickTranslateHotkey ?? "T";
+        AutoLaunchOverlay = _configService.Current.AutoLaunchOverlay;
     }
 
     [RelayCommand]
@@ -69,7 +71,8 @@ public partial class OverlayViewModel : ObservableObject
             OverlayLockedOpacity = LockedOpacity,
             OverlayFontSize = FontSize,
             OverlayHotkey = HotkeyLetter.ToUpper(),
-            QuickTranslateHotkey = QuickTranslateHotkeyLetter.ToUpper()
+            QuickTranslateHotkey = QuickTranslateHotkeyLetter.ToUpper(),
+            AutoLaunchOverlay = AutoLaunchOverlay
         });
 
         WeakReferenceMessenger.Default.Send(new OverlaySettingsChangedMessage());

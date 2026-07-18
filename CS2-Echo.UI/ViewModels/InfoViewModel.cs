@@ -88,7 +88,7 @@ public partial class InfoViewModel : ObservableObject
     {
         _snackbarService.Show("Updating...",
             "Downloading and applying update. The app will restart automatically.",
-            ControlAppearance.Primary,
+            ControlAppearance.Info,
             new SymbolIcon(SymbolRegular.ArrowSync24),
             new System.TimeSpan(0, 0, 5));
         await _updateService.DownloadAndApplyUpdateAsync();

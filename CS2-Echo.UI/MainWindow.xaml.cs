@@ -61,6 +61,11 @@ public partial class MainWindow : FluentWindow
         Loaded += (sender, args) =>
         {
             navigationService.Navigate(typeof(TranslationsPage));
+
+            if (_configService.Current.AutoLaunchOverlay)
+            {
+                _overlayService.ShowOverlay(startLocked: true);
+            }
         };
 
         _quickTranslateWindow = new QuickTranslateWindow(quickTranslateViewModel);

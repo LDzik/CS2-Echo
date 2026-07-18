@@ -25,4 +25,5 @@ public record AppConfig
 
     public double OverlayX { get; init; } = double.NaN;
     public double OverlayY { get; init; } = double.NaN;
+    public bool AutoLaunchOverlay { get; init; } = false;
 }
