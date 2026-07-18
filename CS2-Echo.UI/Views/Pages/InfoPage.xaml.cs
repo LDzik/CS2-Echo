@@ -1,4 +1,5 @@
 ﻿using CS2_Echo.UI.ViewModels;
+using Markdig.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Wpf.Ui.Controls;
 
 namespace CS2_Echo.UI.Views.Pages;
 
@@ -27,8 +29,6 @@ public partial class InfoPage : Page
         InitializeComponent();
         _viewModel = viewModel;
         DataContext = _viewModel;
-
-        ReleaseNotesDialog.DialogHostEx = RootDialogHost;
     }
 
     private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -39,9 +39,53 @@ public partial class InfoPage : Page
 
     private async void ViewReleaseNotes_Click(object sender, RoutedEventArgs e)
     {
-        NotesScrollViewer.ScrollToTop();
+        var textColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#E0E0E0")!;
 
-        await ReleaseNotesDialog.ShowAsync();
+        var markdownViewer = new MarkdownViewer
+        {
+            Markdown = _viewModel.ReleaseNotes,
+            Margin = new Thickness(0, 10, 15, 10),
+            Foreground = textColor
+        };
+
+        var headingKeys = new[]
+        {
+            Markdig.Wpf.Styles.Heading1StyleKey,
+            Markdig.Wpf.Styles.Heading2StyleKey,
+            Markdig.Wpf.Styles.Heading3StyleKey,
+            Markdig.Wpf.Styles.Heading4StyleKey,
+            Markdig.Wpf.Styles.Heading5StyleKey,
+            Markdig.Wpf.Styles.Heading6StyleKey
+        };
+
+        foreach (var key in headingKeys)
+        {
+            if (markdownViewer.TryFindResource(key) is Style originalStyle)
+            {
+                var darkStyle = new Style(typeof(System.Windows.Documents.Paragraph), originalStyle);
+                darkStyle.Setters.Add(new Setter(System.Windows.Documents.TextElement.ForegroundProperty, textColor));
+                markdownViewer.Resources[key] = darkStyle;
+            }
+        }
+
+        markdownViewer.CommandBindings.Add(new CommandBinding(Commands.Hyperlink, MarkdownHyperlink_Executed));
+
+        var scrollViewer = new ScrollViewer
+        {
+            MaxHeight = 400,
+            MaxWidth = 500,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+            Content = markdownViewer
+        };
+
+        var messageBox = new Wpf.Ui.Controls.MessageBox
+        {
+            Title = "Release Notes",
+            Content = scrollViewer,
+            CloseButtonText = "Close"
+        };
+
+        await messageBox.ShowDialogAsync();
     }
 
     private void MarkdownHyperlink_Executed(object sender, ExecutedRoutedEventArgs e)
