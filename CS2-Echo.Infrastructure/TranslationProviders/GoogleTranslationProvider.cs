@@ -30,12 +30,13 @@ public class GoogleTranslationProvider : ITranslationProvider
     {
         if (DateTimeOffset.UtcNow < _cooldownUntil)
         {
-            Console.WriteLine("[Google API] Currently in 429 cooldown period. Skipping translation.");
+            System.Diagnostics.Debug.WriteLine("[Google API] Currently in 429 cooldown period. Skipping translation.");
             return (text, "error");
         }
 
         int maxRetries = 3;
         int delayMs = 1000;
+
         for (int retry = 0; retry < maxRetries; retry++)
         {
             await _throttle.WaitAsync();
@@ -49,36 +50,74 @@ public class GoogleTranslationProvider : ITranslationProvider
                 }
                 _lastRequestTime = DateTimeOffset.UtcNow;
 
-                string url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl={targetLang}&dt=t&q={Uri.EscapeDataString(text)}";
+                //string url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl={targetLang}&dt=t&q={Uri.EscapeDataString(text)}";
+                string url = $"https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=auto&tl={targetLang}&q={Uri.EscapeDataString(text)}";
 
+                using var request = new HttpRequestMessage(HttpMethod.Get, url)
+                {
+                    Version = HttpVersion.Version20
+                };
 
-                using var response = await _httpClient.GetAsync(url);
+                using var response = await _httpClient.SendAsync(request);
+
                 if (response.StatusCode == HttpStatusCode.TooManyRequests)
                 {
                     _cooldownUntil = DateTimeOffset.UtcNow.AddSeconds(30);
-                    Console.WriteLine("[Google API] Rate limited (HTTP 429). Triggering 30s global cooldown.");
+                    System.Diagnostics.Debug.WriteLine("[Google API] Rate limited (HTTP 429). Triggering 30s global cooldown.");
                     return (text, "error");
                 }
 
                 response.EnsureSuccessStatusCode();
 
                 string content = await response.Content.ReadAsStringAsync();
+                // Format: ["Translated string", "detected_lang"] or [["Translated string"],"detected_lang"]
                 using var doc = JsonDocument.Parse(content);
+                var root = doc.RootElement;
 
-                var translatedText = doc.RootElement[0][0][0].GetString() ?? string.Empty;
-                var detectedSourceLang = doc.RootElement[2].GetString() ?? "unknown";
+                string translatedText = string.Empty;
+                string detectedSourceLang = "unknown";
+
+                if (root.ValueKind == JsonValueKind.Array && root.GetArrayLength() > 0)
+                {
+                    var firstElem = root[0];
+
+                    if (firstElem.ValueKind == JsonValueKind.Array)
+                    {
+                        if (firstElem.GetArrayLength() > 0)
+                        {
+                            translatedText = firstElem[0].GetString() ?? string.Empty;
+                        }
+
+                        // Format: [["Translated string", "detected_lang"]]
+                        if (firstElem.GetArrayLength() > 1 && firstElem[1].ValueKind == JsonValueKind.String)
+                        {
+                            detectedSourceLang = firstElem[1].GetString() ?? "unknown";
+                        }
+                    }
+                    else if (firstElem.ValueKind == JsonValueKind.String)
+                    {
+                        // Format: ["Translated string", "detected_lang"]
+                        translatedText = firstElem.GetString() ?? string.Empty;
+                    }
+
+                    // Format: [["Translated string"],"detected_lang"] or ["Translated string", "detected_lang"]
+                    if (root.GetArrayLength() > 1 && root[1].ValueKind == JsonValueKind.String)
+                    {
+                        detectedSourceLang = root[1].GetString() ?? "unknown";
+                    }
+                }
 
                 return (translatedText, detectedSourceLang);
             }
             catch (HttpRequestException ex) when (retry < maxRetries - 1 && ex.StatusCode != HttpStatusCode.TooManyRequests)
             {
-                Console.WriteLine($"[Google API] Transient error ({ex.StatusCode}). Retrying in {delayMs}ms...");
+                System.Diagnostics.Debug.WriteLine($"[Google API] Transient error ({ex.StatusCode}). Retrying in {delayMs}ms...");
                 await Task.Delay(delayMs);
                 delayMs *= 2;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[Google API Error] {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[Google API Error] {ex.Message}");
                 return (text, "error");
             }
             finally

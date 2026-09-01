@@ -53,7 +53,7 @@ public class TranslationService
         var provider = ActiveProvider;
         var result = await provider.TranslateAsync(text, targetLang);
 
-        if (result.DetectedSourceLang != "error")
+        if (result.DetectedSourceLang != "error" || result.DetectedSourceLang != "unknown")
         {
             await _dbService.SaveTranslationAsync(text, result.TranslatedText, result.DetectedSourceLang, targetLang);
         }

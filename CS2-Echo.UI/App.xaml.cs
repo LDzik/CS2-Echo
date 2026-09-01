@@ -10,13 +10,15 @@ using Microsoft.Extensions.Hosting;
 using System.Configuration;
 using System.Data;
 using System.IO;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
+using Velopack;
 using Wpf.Ui;
 using Wpf.Ui.Abstractions;
 using Wpf.Ui.Controls;
 using Wpf.Ui.DependencyInjection;
-using Velopack;
 
 namespace CS2_Echo.UI;
 
@@ -47,10 +49,32 @@ public partial class App : Application
                 services.AddSingleton<LogMonitorService>();
                 services.AddHostedService(sp => sp.GetRequiredService<LogMonitorService>());
 
+
+                var cookieContainer = new CookieContainer();
+
                 services.AddHttpClient<GoogleTranslationProvider>(client =>
                 {
-                    //client.DefaultRequestHeaders.UserAgent.ParseAdd("CS2-Echo/1.0");
-                    client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36");
+                    client.DefaultRequestVersion = HttpVersion.Version20;
+                    client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrLower;
+
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36");
+                    client.DefaultRequestHeaders.Add("Accept", "*/*");
+                    client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.9,pl;q=0.8");
+                    client.DefaultRequestHeaders.Add("Sec-Ch-Ua", "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Google Chrome\";v=\"128\"");
+                    client.DefaultRequestHeaders.Add("Sec-Ch-Ua-Mobile", "?0");
+                    client.DefaultRequestHeaders.Add("Sec-Ch-Ua-Platform", "\"Windows\"");
+                    client.DefaultRequestHeaders.Add("Sec-Fetch-Dest", "empty");
+                    client.DefaultRequestHeaders.Add("Sec-Fetch-Mode", "cors");
+                    client.DefaultRequestHeaders.Add("Sec-Fetch-Site", "none");
+                    client.DefaultRequestHeaders.Add("Referer", "https://translate.google.com/");
+                })
+                .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+                {
+                    UseCookies = true,
+                    CookieContainer = cookieContainer,
+                    AutomaticDecompression = DecompressionMethods.All,
+                    EnableMultipleHttp2Connections = true
                 });
                 services.AddSingleton<DeepLTranslationProvider>();
                 services.AddSingleton<GeminiTranslationProvider>();
